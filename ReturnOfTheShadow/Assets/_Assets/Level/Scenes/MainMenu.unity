@@ -928,6 +928,7 @@ GameObject:
   - component: {fileID: 952058782}
   - component: {fileID: 952058781}
   - component: {fileID: 952058780}
+  - component: {fileID: 952058785}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -1099,6 +1100,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 952058778}
   m_CullTransparentMesh: 1
+--- !u!114 &952058785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952058778}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fbc27ed7441cfe4cb67bfbcd331e048, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1000726183
 GameObject:
   m_ObjectHideFlags: 0
@@ -1719,6 +1732,7 @@ GameObject:
   - component: {fileID: 1355642816}
   - component: {fileID: 1355642819}
   - component: {fileID: 1355642820}
+  - component: {fileID: 1355642821}
   m_Layer: 5
   m_Name: Play
   m_TagString: Untagged
@@ -1890,6 +1904,18 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1355642821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355642814}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fbc27ed7441cfe4cb67bfbcd331e048, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1363894375
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,8 +2014,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playButton: {fileID: 1355642816}
-  levelBackButton: {fileID: 1084651523}
   quitButton: {fileID: 952058782}
+  levelBackButton: {fileID: 1084651523}
   landingPageLeanWindow: {fileID: 1827937128}
   levelSelectLeanWindow: {fileID: 1984822184}
 --- !u!4 &1383387907
@@ -3364,6 +3390,18 @@ PrefabInstance:
     - target: {fileID: 1221767098510722717, guid: 677643a7ab31407409db5354a087452d, type: 3}
       propertyPath: m_SizeDelta.y
       value: 343.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221767098510722717, guid: 677643a7ab31407409db5354a087452d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221767098510722717, guid: 677643a7ab31407409db5354a087452d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221767098510722717, guid: 677643a7ab31407409db5354a087452d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1221767098510722717, guid: 677643a7ab31407409db5354a087452d, type: 3}
       propertyPath: m_LocalPosition.x
