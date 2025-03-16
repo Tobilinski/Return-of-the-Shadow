@@ -2,57 +2,104 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
+using UnityEngine.Serialization;
+
 public class PlayerController : MonoBehaviour
 {
     private float horizontal;
     private Rigidbody2D rb;
-    
+    private PlayerInput playerInput;
+    [FormerlySerializedAs("movementSpeed")]
     [Title("Move")]
-    [SerializeField, GUIColor("RGB(0, 0.5, 0)")] private float movementSpeed = 5f;
-    [SerializeField, GUIColor("RGB(0, 0.5, 0)")] private float jumpPower = 5f;
-    
+    [SerializeField, GUIColor("Yellow"), ReadOnly] private float movementSpeedFinal;
+    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float midAirSpeed = 2.5f;
+    [SerializeField] private float jumpPower = 5f;
     [Title("Gravity")]
-    [SerializeField, GUIColor("RGB(0, 0.5, 0)")] private float baseGravity = 2f;
-    [SerializeField, GUIColor("RGB(0, 0.5, 0)")] private float maxFallSpeed = 18f;
-    [SerializeField, GUIColor("RGB(0, 0.5, 0)")] private float fallSpeedMultiplier = 2f;
+    [SerializeField] private float baseGravity = 2f;
+    [SerializeField] private float maxFallSpeed = 18f;
+    [SerializeField] private float fallSpeedMultiplier = 2f;
     [Title("GroundCheck")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.5f);
     [SerializeField] private LayerMask groundLayer;
     private int maxJumps = 1;
     [SerializeField, GUIColor("Yellow"),ReadOnly]private int jumpRemaining;
+    [Title("Object Pool")]
+    [SerializeField] private ObjectPool objectPool;
+    private GameObject poolObject;
+    [Title("Crosshair")]
+    [SerializeField] private Transform crosshair;
+    [SerializeField] private float lookSensitivity = 5f;
+    private float lookHorizontal;
+    private float lookVertical;
+    [SerializeField, GUIColor("Yellow"),ReadOnly] private float crosshairDistanceFromPlayer;
+    [SerializeField, GUIColor("Green")] private float maxDistance;
+
+    #region TestMethods
+    [Button]
+    public void TestSpawn()
+    {
+        poolObject = objectPool.GetObject();
+        poolObject.transform.position = gameObject.transform.position;
+        poolObject.SetActive(true);
+    }
+
+    [Button]
+    public void TestDespawn()
+    {
+        objectPool.ReturnObject(poolObject);
+    }
+    #endregion
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        objectPool.objectPool.Clear();
+        objectPool.LoadObjectPool();
+        playerInput = GetComponent<PlayerInput>();
     }
 
     private void Update()
     {
         UpdateGroundCheck();
+        crosshairDistanceFromPlayer = Vector2.Distance(transform.position, crosshair.position);
+        if (playerInput.currentControlScheme == "Gamepad")
+        {
+            UpdateMoveCrosshair();
+        }
+        else
+        {
+            UpdateOnLookMouse();
+        }
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(horizontal * movementSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(horizontal * movementSpeedFinal, rb.linearVelocity.y);
         FixedUpdateGravity();
     }
 
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        horizontal = context.ReadValue<Vector2>().x;
-    }
+    
 
     private void FixedUpdateGravity()
     {
-        if (rb.linearVelocity.y < 0f)
+        if (rb.linearVelocity.y < maxDistance)
         {
             rb.gravityScale = baseGravity * fallSpeedMultiplier;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y - maxFallSpeed));
         }
     }
 
+    private void UpdateMoveCrosshair()
+    {
+        if (crosshairDistanceFromPlayer <= maxDistance)
+        {
+            crosshair.Translate(lookHorizontal * lookSensitivity, lookVertical * lookSensitivity, crosshair.position.z);
+        }
+    }
+    #region Movement Methods
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed && jumpRemaining > 0)
@@ -65,12 +112,21 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
         }
     }
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        horizontal = context.ReadValue<Vector2>().x;
+    }
 
     private void UpdateGroundCheck()
     {
         if (Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0, groundLayer))
         {
             jumpRemaining = maxJumps;
+            movementSpeedFinal = movementSpeed;
+        }
+        else
+        {
+            movementSpeedFinal = midAirSpeed;
         }
     }
 
@@ -78,5 +134,17 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawCube(groundCheck.position, groundCheckSize);
+    }
+    #endregion
+    public void OnLookController(InputAction.CallbackContext context)
+    {
+        lookHorizontal = context.ReadValue<Vector2>().x;
+        lookVertical = context.ReadValue<Vector2>().y;
+    }
+
+    private void UpdateOnLookMouse()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        crosshair.position = new Vector3(mousePosition.x, mousePosition.y, 0f);
     }
 }
