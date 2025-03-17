@@ -94,10 +94,18 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateMoveCrosshair()
     {
-        if (crosshairDistanceFromPlayer <= maxDistance)
+        Vector3 newPosition = crosshair.position + new Vector3(lookHorizontal * lookSensitivity, lookVertical * lookSensitivity, 0);
+        
+        float distance = Vector3.Distance(gameObject.transform.position, newPosition);
+
+        // Clamp the crosshair's position if it exceeds the max distance
+        if (distance > maxDistance)
         {
-            crosshair.Translate(lookHorizontal * lookSensitivity, lookVertical * lookSensitivity, crosshair.position.z);
+            Vector3 normalizedDirection = (newPosition - gameObject.transform.position).normalized; // Get direction from player to crosshair
+            newPosition = gameObject.transform.position + normalizedDirection * maxDistance; // Set position at max distance
         }
+        
+        crosshair.position = newPosition;
     }
     #region Movement Methods
     public void OnJump(InputAction.CallbackContext context)

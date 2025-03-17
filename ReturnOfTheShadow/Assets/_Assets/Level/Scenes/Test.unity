@@ -1532,7 +1532,7 @@ MonoBehaviour:
   crosshair: {fileID: 1881631440}
   lookSensitivity: 0.5
   crosshairDistanceFromPlayer: 10
-  maxDistance: 20
+  maxDistance: 10
 --- !u!114 &1072013106
 MonoBehaviour:
   m_ObjectHideFlags: 0
