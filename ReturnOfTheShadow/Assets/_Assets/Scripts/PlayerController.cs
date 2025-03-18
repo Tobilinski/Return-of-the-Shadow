@@ -28,26 +28,29 @@ public class PlayerController : MonoBehaviour
     [Title("Object Pool")]
     [SerializeField] private ObjectPool objectPool;
     private GameObject poolObject;
+    [SerializeField] private Transform boomerangSpawn;
+    private bool toggleReturn;
     [Title("Crosshair")]
     [SerializeField] private Transform crosshair;
     [SerializeField] private float lookSensitivity = 5f;
     private float lookHorizontal;
     private float lookVertical;
-    [SerializeField, GUIColor("Yellow"),ReadOnly] private float crosshairDistanceFromPlayer;
+    [SerializeField] private VariableReference<Vector2> crosshairLocation;
     [SerializeField, GUIColor("Green")] private float maxDistance;
-
+    
     #region TestMethods
     [Button]
-    public void TestSpawn()
+    public void SpawnBoomerang()
     {
         poolObject = objectPool.GetObject();
-        poolObject.transform.position = gameObject.transform.position;
+        poolObject.transform.position = boomerangSpawn.position;
         poolObject.SetActive(true);
     }
 
     [Button]
-    public void TestDespawn()
+    public void DespawnBoomerang()
     {
+        poolObject.SetActive(false);
         objectPool.ReturnObject(poolObject);
     }
     #endregion
@@ -63,7 +66,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         UpdateGroundCheck();
-        crosshairDistanceFromPlayer = Vector2.Distance(transform.position, crosshair.position);
+        crosshairLocation.value = crosshair.position;
         if (playerInput.currentControlScheme == "Gamepad")
         {
             UpdateMoveCrosshair();
@@ -97,12 +100,11 @@ public class PlayerController : MonoBehaviour
         Vector3 newPosition = crosshair.position + new Vector3(lookHorizontal * lookSensitivity, lookVertical * lookSensitivity, 0);
         
         float distance = Vector3.Distance(gameObject.transform.position, newPosition);
-
         // Clamp the crosshair's position if it exceeds the max distance
         if (distance > maxDistance)
         {
             Vector3 normalizedDirection = (newPosition - gameObject.transform.position).normalized; // Get direction from player to crosshair
-            newPosition = gameObject.transform.position + normalizedDirection * maxDistance; // Set position at max distance
+            newPosition = gameObject.transform.position + (normalizedDirection * maxDistance); // Set position at max distance
         }
         
         crosshair.position = newPosition;
@@ -123,6 +125,28 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         horizontal = context.ReadValue<Vector2>().x;
+    }
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (toggleReturn)
+            {
+                DespawnBoomerang();
+            }
+            else
+            {
+                SpawnBoomerang();
+            }
+            toggleReturn = !toggleReturn;
+        }
+    }
+    public void OnReturn(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            DespawnBoomerang();
+        }
     }
 
     private void UpdateGroundCheck()

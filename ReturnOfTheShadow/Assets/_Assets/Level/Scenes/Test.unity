@@ -474,7 +474,7 @@ Transform:
   m_GameObject: {fileID: 549347844}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.4500303, y: -6.84, z: -10}
+  m_LocalPosition: {x: 5.4500303, y: -0.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1518,7 +1518,7 @@ MonoBehaviour:
   movementSpeedFinal: 12
   movementSpeed: 12
   midAirSpeed: 10
-  jumpPower: 15
+  jumpPower: 16
   baseGravity: 2
   maxFallSpeed: 1.5
   fallSpeedMultiplier: 1.5
@@ -1529,9 +1529,10 @@ MonoBehaviour:
     m_Bits: 64
   jumpRemaining: 0
   objectPool: {fileID: 11400000, guid: 077e9085d8320f742ab735519ed703e0, type: 2}
+  boomerangSpawn: {fileID: 1713590706}
   crosshair: {fileID: 1881631440}
   lookSensitivity: 0.5
-  crosshairDistanceFromPlayer: 10
+  crosshairLocation: {fileID: 11400000, guid: 76d14409fb60ad046a53daba129f8534, type: 2}
   maxDistance: 10
 --- !u!114 &1072013106
 MonoBehaviour:
@@ -1591,7 +1592,19 @@ MonoBehaviour:
     m_ActionId: bc4b93ef-18c2-4e69-aae3-90e53108a9e0
     m_ActionName: 'Player/Look[/DualShock4GamepadHID/rightStick,/Mouse/delta,/Touchscreen/delta]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1072013105}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 2194497a-5d7e-45c2-a276-47b248d8c471
     m_ActionName: 'Player/Fire[/DualShock4GamepadHID/rightTrigger,/Mouse/leftButton,/Touchscreen/primaryTouch/tap]'
   - m_PersistentCalls:
@@ -1650,6 +1663,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6a9a08de-9fe3-4d2b-923b-2b5b89a1e91b
     m_ActionName: 'Player/Jump[/Keyboard/space,/DualShock4GamepadHID/buttonSouth]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1072013105}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnReturn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5107632b-84e0-4665-bca9-f1aace02021d
+    m_ActionName: 'Player/Return[/Mouse/rightButton,/DualShock4GamepadHID/leftTrigger]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1729,6 +1758,8 @@ Transform:
   - {fileID: 974661388}
   - {fileID: 558593205}
   - {fileID: 1063704038}
+  - {fileID: 1881631440}
+  - {fileID: 1713590706}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &1072013109
@@ -2288,6 +2319,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!1 &1713590705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1713590706}
+  m_Layer: 0
+  m_Name: BoomerrangSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1713590706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713590705}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.97, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1072013108}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1881631438
 GameObject:
   m_ObjectHideFlags: 0
@@ -2368,12 +2430,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881631438}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.45, y: -6.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1072013108}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1908615542
 GameObject:
@@ -2660,4 +2722,3 @@ SceneRoots:
   - {fileID: 2083221602}
   - {fileID: 1685169951}
   - {fileID: 1072013108}
-  - {fileID: 1881631440}
