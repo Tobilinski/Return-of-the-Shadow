@@ -37,8 +37,9 @@ public class PlayerController : MonoBehaviour
     private float lookVertical;
     [SerializeField] private VariableReference<Vector2> crosshairLocation;
     [SerializeField, GUIColor("Green")] private float maxDistance;
-    
-    #region TestMethods
+    [Title("DropShadow")]
+    [SerializeField] private Transform dropShadow;
+    #region Boomerang Spawn Stuff
     [Button]
     public void SpawnBoomerang()
     {
@@ -66,6 +67,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         UpdateGroundCheck();
+        UpdateDropShadow();
         crosshairLocation.value = crosshair.position;
         if (playerInput.currentControlScheme == "Gamepad")
         {
@@ -84,7 +86,14 @@ public class PlayerController : MonoBehaviour
         FixedUpdateGravity();
     }
 
-    
+    private void UpdateDropShadow()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 20, groundLayer);
+        if (hit.collider != null)
+        {
+            dropShadow.position = hit.point;
+        }
+    }
 
     private void FixedUpdateGravity()
     {
