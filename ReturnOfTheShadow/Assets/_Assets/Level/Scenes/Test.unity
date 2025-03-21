@@ -1449,7 +1449,7 @@ Transform:
   m_GameObject: {fileID: 1000904435}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.2148, y: 1.17, z: 0}
+  m_LocalPosition: {x: -7.2148, y: -0.06, z: 0}
   m_LocalScale: {x: 7.4255037, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1605,7 +1605,8 @@ MonoBehaviour:
   movementSpeedFinal: 12
   movementSpeed: 12
   midAirSpeed: 10
-  jumpPower: 16
+  defaultJumpPower: 20
+  midAirJumpPower: 16
   baseGravity: 2
   maxFallSpeed: 1.5
   fallSpeedMultiplier: 1.5

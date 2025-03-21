@@ -25,11 +25,7 @@ public class ObjectPool : SerializedScriptableObject
             GameObject obj = objectPool.Dequeue();
             return obj;
         }
-        else
-        {
-            GameObject obj = Instantiate(prefab);
-            return obj;
-        }
+        return null;
     }
     public void ReturnObject(GameObject obj)
     {

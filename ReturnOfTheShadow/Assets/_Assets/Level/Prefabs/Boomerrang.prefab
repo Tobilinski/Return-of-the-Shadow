@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5793246823322041208}
   m_Layer: 0
   m_Name: Boomerrang
-  m_TagString: Untagged
+  m_TagString: Boomerang
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -177,3 +177,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crosshairLocation: {fileID: 11400000, guid: 76d14409fb60ad046a53daba129f8534, type: 2}
   projectileSpeed: 20
+  timeUntilReturn: 1
+  objectPool: {fileID: 11400000, guid: 077e9085d8320f742ab735519ed703e0, type: 2}

@@ -12,13 +12,15 @@ public class PlayerController : MonoBehaviour
     [FormerlySerializedAs("movementSpeed")]
     [Title("Move")]
     [SerializeField, GUIColor("Yellow"), ReadOnly] private float movementSpeedFinal;
-    [SerializeField] private float movementSpeed = 5f;
-    [SerializeField] private float midAirSpeed = 2.5f;
-    [SerializeField] private float jumpPower = 5f;
+    [SerializeField] private float movementSpeed;
+    [SerializeField] private float midAirSpeed;
+    [SerializeField] private float defaultJumpPower;
+    [FormerlySerializedAs("midaAirJumpPower")] [SerializeField] private float midAirJumpPower;
+    private float jumpPower;
     [Title("Gravity")]
     [SerializeField] private float baseGravity = 2f;
-    [SerializeField] private float maxFallSpeed = 18f;
-    [SerializeField] private float fallSpeedMultiplier = 2f;
+    [SerializeField] private float maxFallSpeed;
+    [SerializeField] private float fallSpeedMultiplier;
     [Title("GroundCheck")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.5f);
@@ -29,7 +31,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ObjectPool objectPool;
     private GameObject poolObject;
     [SerializeField] private Transform boomerangSpawn;
-    private bool toggleReturn;
     [Title("Crosshair")]
     [SerializeField] private Transform crosshair;
     [SerializeField] private float lookSensitivity = 5f;
@@ -41,18 +42,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform dropShadow;
     #region Boomerang Spawn Stuff
     [Button]
-    public void SpawnBoomerang()
+    public void LoadBoomerang()
     {
         poolObject = objectPool.GetObject();
-        poolObject.transform.position = boomerangSpawn.position;
-        poolObject.SetActive(true);
     }
 
-    [Button]
-    public void DespawnBoomerang()
+    private void SpawnBoomerang()
     {
-        poolObject.SetActive(false);
-        objectPool.ReturnObject(poolObject);
+        poolObject.transform.position = boomerangSpawn.position;
+        poolObject.SetActive(true);
     }
     #endregion
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -89,7 +87,7 @@ public class PlayerController : MonoBehaviour
     private void UpdateDropShadow()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 20, groundLayer);
-        if (hit.collider != null)
+        if (hit.collider)
         {
             dropShadow.position = hit.point;
         }
@@ -139,35 +137,25 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            if (toggleReturn)
-            {
-                DespawnBoomerang();
-            }
-            else
+            LoadBoomerang();
+            if (poolObject != null)
             {
                 SpawnBoomerang();
             }
-            toggleReturn = !toggleReturn;
         }
     }
-    public void OnReturn(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            DespawnBoomerang();
-        }
-    }
-
     private void UpdateGroundCheck()
     {
         if (Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0, groundLayer))
         {
             jumpRemaining = maxJumps;
             movementSpeedFinal = movementSpeed;
+            jumpPower = defaultJumpPower;
         }
         else
         {
             movementSpeedFinal = midAirSpeed;
+            jumpPower = midAirJumpPower;
         }
     }
 
@@ -187,5 +175,15 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         crosshair.position = new Vector3(mousePosition.x, mousePosition.y, 0f);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Boomerang"))
+        {
+            Debug.Log("Boomerang");
+            IReturn returnObject = other.gameObject.GetComponent<IReturn>();
+            returnObject.DespawnBoomerang();
+        }
     }
 }

@@ -263,6 +263,28 @@
                 },
                 {
                     "name": "",
+                    "id": "794f7354-67f8-4904-840c-2489989eebee",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5746e0e6-b7b0-4b32-ab04-1c27799274e4",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d07307a1-f7d6-4a45-bb47-167a5b19feae",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
