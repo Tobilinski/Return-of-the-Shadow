@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
@@ -15,7 +16,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float movementSpeed;
     [SerializeField] private float midAirSpeed;
     [SerializeField] private float defaultJumpPower;
-    [FormerlySerializedAs("midaAirJumpPower")] [SerializeField] private float midAirJumpPower;
+    [SerializeField] private float midAirJumpPower;
+    //CoyoteTime
+    private float timeOffFloor;
+    private float maxCoyoteTime = 0.15f;
+    //CoyoteTime
     private float jumpPower;
     [Title("Gravity")]
     [SerializeField] private float baseGravity = 2f;
@@ -25,7 +30,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.5f);
     [SerializeField] private LayerMask groundLayer;
-    private int maxJumps = 1;
+    private int maxJumps = 2;
     [SerializeField, GUIColor("Yellow"),ReadOnly]private int jumpRemaining;
     [Title("Object Pool")]
     [SerializeField] private ObjectPool objectPool;
@@ -64,7 +69,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        UpdateGroundCheck();
         UpdateDropShadow();
         crosshairLocation.value = crosshair.position;
         if (playerInput.currentControlScheme == "Gamepad")
@@ -80,6 +84,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        UpdateGroundCheck();
         rb.linearVelocity = new Vector2(horizontal * movementSpeedFinal, rb.linearVelocity.y);
         FixedUpdateGravity();
     }
@@ -95,10 +100,14 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdateGravity()
     {
-        if (rb.linearVelocity.y < maxDistance)
+        if (rb.linearVelocity.y < 0)
         {
             rb.gravityScale = baseGravity * fallSpeedMultiplier;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y - maxFallSpeed));
+        }
+        else
+        {
+            rb.gravityScale = 3;
         }
     }
 
@@ -113,26 +122,52 @@ public class PlayerController : MonoBehaviour
             Vector3 normalizedDirection = (newPosition - gameObject.transform.position).normalized; // Get direction from player to crosshair
             newPosition = gameObject.transform.position + (normalizedDirection * maxDistance); // Set position at max distance
         }
-        
         crosshair.position = newPosition;
     }
     #region Movement Methods
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed && jumpRemaining > 0)
+        if (context.performed)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
-            jumpRemaining--;
+            if (timeOffFloor <= maxCoyoteTime || jumpRemaining > 0)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
+            }
         }
         else if (context.canceled) 
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
+            jumpRemaining--;
         }
     }
     public void OnMove(InputAction.CallbackContext context)
     {
         horizontal = context.ReadValue<Vector2>().x;
     }
+   
+    private void UpdateGroundCheck()
+    {
+        if (Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0, groundLayer))
+        {
+            jumpRemaining = maxJumps;
+            movementSpeedFinal = movementSpeed;
+            jumpPower = defaultJumpPower;
+            timeOffFloor = 0f;
+        }
+        else
+        {
+            movementSpeedFinal = midAirSpeed;
+            jumpPower = midAirJumpPower;
+            timeOffFloor += Time.deltaTime;
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawCube(groundCheck.position, groundCheckSize);
+    }
+    #endregion
     public void OnFire(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -144,27 +179,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    private void UpdateGroundCheck()
-    {
-        if (Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0, groundLayer))
-        {
-            jumpRemaining = maxJumps;
-            movementSpeedFinal = movementSpeed;
-            jumpPower = defaultJumpPower;
-        }
-        else
-        {
-            movementSpeedFinal = midAirSpeed;
-            jumpPower = midAirJumpPower;
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawCube(groundCheck.position, groundCheckSize);
-    }
-    #endregion
     public void OnLookController(InputAction.CallbackContext context)
     {
         lookHorizontal = context.ReadValue<Vector2>().x;
