@@ -14,6 +14,9 @@ public class Boomerang : MonoBehaviour,IReturn
     private Vector3 crosshairPosition;
     private Vector3 direction;
 
+    private float autoDespawnTime = 3;
+    private float despawnTimer;
+
     [Title("Object Pool")]
     [SerializeField] private ObjectPool objectPool;
     private GameObject poolObject;
@@ -34,11 +37,10 @@ public class Boomerang : MonoBehaviour,IReturn
     }
     private void Throw()
     {
-        crosshairPosition = new Vector3(crosshairLocation.value.x, crosshairLocation.value.y, 0);
-        direction = (crosshairPosition - transform.position).normalized; 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
-        
+        direction = (crosshairLocation.value - (Vector2)transform.position).normalized;
+
+        transform.right = direction; // Automatically sets rotation
+
         rb.linearVelocity = direction * projectileSpeed; 
     }
     
@@ -46,19 +48,33 @@ public class Boomerang : MonoBehaviour,IReturn
     {
         if (!isReturning)
         {
-            isReturning = true; // Ensure return logic runs only once
+            isReturning = true; // Makes return logic runs only once
 
-            Vector3 playerPosition = FindObjectOfType<PlayerController>().transform.position; 
-            direction = (playerPosition - transform.position).normalized; // Move toward the player
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
-            
+            Vector2 playerPosition = FindObjectOfType<PlayerController>().transform.position; 
+            direction = (playerPosition - (Vector2)transform.position).normalized;
+
+            transform.right = direction; // Automatically sets rotation
+
             rb.linearVelocity = direction * projectileSpeed; // Move toward player
+        }
+    }
+
+    private void UpdateAutoReturn()
+    {
+        if (despawnTimer < autoDespawnTime)
+        {
+            despawnTimer += Time.deltaTime;
+        }
+        else
+        {
+            DespawnBoomerang();
+            despawnTimer = 0;
         }
     }
 
     private void Update()
     {
+        if(isReturning) UpdateAutoReturn();
         if (startTimer)
         {
             CheckReturnTime();
