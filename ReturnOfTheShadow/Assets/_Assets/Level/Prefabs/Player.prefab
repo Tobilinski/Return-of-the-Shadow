@@ -899,8 +899,8 @@ MonoBehaviour:
   movementSpeedFinal: 12
   movementSpeed: 12
   midAirSpeed: 10
-  defaultJumpPower: 20
-  midAirJumpPower: 16
+  defaultJumpPower: 16
+  midAirJumpPower: 12
   baseGravity: 2
   maxFallSpeed: 1.5
   fallSpeedMultiplier: 1.5
