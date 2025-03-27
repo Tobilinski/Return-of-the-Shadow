@@ -97,3 +97,8 @@ public interface IReturn
 {
     public void DespawnBoomerang();
 }
+
+public interface IInteractable
+{
+    public void Interact();
+}
