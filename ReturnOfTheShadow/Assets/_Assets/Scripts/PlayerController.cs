@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField, GUIColor("Green")] private float maxDistance;
     [Title("DropShadow")]
     [SerializeField] private Transform dropShadow;
+    [Title("Camera")]
+    [SerializeField] private Camera mainCamera;
     #region Boomerang Spawn Stuff
     [Button]
     public void LoadBoomerang()
@@ -187,7 +189,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateOnLookMouse()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector3 mousePosition = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         crosshair.position = new Vector3(mousePosition.x, mousePosition.y, 0f);
     }
 
