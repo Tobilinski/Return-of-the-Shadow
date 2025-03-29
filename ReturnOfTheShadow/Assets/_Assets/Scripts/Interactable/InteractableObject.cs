@@ -1,21 +1,18 @@
+using System;
 using UnityEngine;
-
+[RequireComponent(typeof(Animator))]
 public class InteractableObject : MonoBehaviour,IInteractable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private static readonly int _isTrigger = Animator.StringToHash("isTrigger");
+    private Animator animator;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        animator = GetComponent<Animator>();
     }
 
     public void Interact()
     {
-        throw new System.NotImplementedException();
+        if(animator != null) animator.SetTrigger(_isTrigger);
     }
 }
