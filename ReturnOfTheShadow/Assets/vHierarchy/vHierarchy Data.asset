@@ -17,6 +17,7 @@ MonoBehaviour:
     - 8c9cfa26abfee488c85f1582747f6a02
     - 986d4643241895840927c2d7e047054a
     - 13118eef2c54b6045abab370ec9b43b1
+    - 4f5e54a2e5fe05c48aab9fb099142cc9
     values:
     - goDatas_byGlobalId:
         keys:
@@ -59,4 +60,16 @@ MonoBehaviour:
         - colorIndex: 2
           iconNameOrGuid: 
         - colorIndex: 6
+          iconNameOrGuid: 
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-4f5e54a2e5fe05c48aab9fb099142cc9-1606962926485992863-993489328
+        - globalObjectIdString: GlobalObjectId_V1-2-4f5e54a2e5fe05c48aab9fb099142cc9-1777773090-0
+        - globalObjectIdString: GlobalObjectId_V1-2-4f5e54a2e5fe05c48aab9fb099142cc9-285051193-0
+        values:
+        - colorIndex: 7
+          iconNameOrGuid: 
+        - colorIndex: 9
+          iconNameOrGuid: 
+        - colorIndex: 3
           iconNameOrGuid: 
