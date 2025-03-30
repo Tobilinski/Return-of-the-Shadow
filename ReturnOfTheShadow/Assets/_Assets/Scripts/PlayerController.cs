@@ -45,10 +45,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField, GUIColor("Green")] private float maxDistance;
     [Title("DropShadow")]
     [SerializeField] private Transform dropShadow;
-    [Title("Camera")]
-    [SerializeField] private Camera mainCamera;
+    
+    //Collider Event Trigger
+    private ColliderEventTrigger eventTrigger;
+    
+    
     #region Boomerang Spawn Stuff
-    [Button]
     public void LoadBoomerang()
     {
         poolObject = objectPool.GetObject();
@@ -67,6 +69,13 @@ public class PlayerController : MonoBehaviour
         objectPool.objectPool.Clear();
         objectPool.LoadObjectPool();
         playerInput = GetComponent<PlayerInput>();
+        eventTrigger = GetComponent<ColliderEventTrigger>();
+        eventTrigger.onCollisionEnterBoomerang.AddListener(ReturnBoomerangOnCollision);
+    }
+
+    private void OnDisable()
+    {
+        eventTrigger.onCollisionEnterBoomerang.RemoveListener(ReturnBoomerangOnCollision);
     }
 
     private void Update()
@@ -189,17 +198,13 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateOnLookMouse()
     {
-        Vector3 mousePosition = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         crosshair.position = new Vector3(mousePosition.x, mousePosition.y, 0f);
     }
-
-    private void OnCollisionEnter2D(Collision2D other)
+    
+    private void ReturnBoomerangOnCollision(GameObject other)
     {
-        if (other.gameObject.CompareTag("Boomerang"))
-        {
-            Debug.Log("Boomerang");
-            IReturn returnObject = other.gameObject.GetComponent<IReturn>();
-            returnObject.DespawnBoomerang();
-        }
+        IReturn returnObject = other.gameObject.GetComponent<IReturn>();
+        returnObject.DespawnBoomerang();
     }
 }
