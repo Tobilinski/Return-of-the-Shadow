@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 6171247523469895419}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -457,7 +457,6 @@ MonoBehaviour:
   crosshairLocation: {fileID: 11400000, guid: 76d14409fb60ad046a53daba129f8534, type: 2}
   maxDistance: 10
   dropShadow: {fileID: 5991151201627196208}
-  mainCamera: {fileID: 0}
 --- !u!50 &7347759422061767120
 Rigidbody2D:
   serializedVersion: 5
