@@ -7,7 +7,7 @@ using Sirenix.OdinInspector;
 public class ColliderEventTrigger : SerializedMonoBehaviour
 {
     [Title("Other Collider Colliding List")] 
-    [SerializeField] private HashSet<Collider2D> colliders;
+    [SerializeField] private List<Collider2D> colliders;
     [Title("Unity Events")]
     public UnityEvent onCollisionEnter;
     public UnityEvent<PlayerController> onCollisionEnterPlayer;
