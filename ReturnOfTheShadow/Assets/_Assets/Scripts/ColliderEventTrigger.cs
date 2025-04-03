@@ -14,6 +14,8 @@ public class ColliderEventTrigger : SerializedMonoBehaviour
     public UnityEvent<GameObject> onCollisionEnterBoomerang;
     public UnityEvent onCollisionExit;
     public UnityEvent<PlayerController> onCollisionExitPlayer;
+    public UnityEvent onTriggerEnter;
+    public UnityEvent onTriggerExit;
     public void OnCollisionEnter2D(Collision2D other)
     {
         colliders.Add(other.gameObject.GetComponent<Collider2D>());
@@ -41,5 +43,16 @@ public class ColliderEventTrigger : SerializedMonoBehaviour
         {
             onCollisionExitPlayer?.Invoke(other.gameObject.GetComponent<PlayerController>());
         }
+    }
+
+    public void OnTriggerEnter2D(Collider2D other)
+    { 
+        colliders.Add(other.gameObject.GetComponent<Collider2D>());
+        onTriggerEnter?.Invoke();
+    }
+    public void OnTriggerExit2D(Collider2D other)
+    {
+        colliders.Remove(other.gameObject.GetComponent<Collider2D>());
+        onTriggerExit?.Invoke();
     }
 }
