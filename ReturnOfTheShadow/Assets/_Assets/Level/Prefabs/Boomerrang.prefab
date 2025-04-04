@@ -167,8 +167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crosshairLocation: {fileID: 11400000, guid: 76d14409fb60ad046a53daba129f8534, type: 2}
-  projectileSpeed: 20
-  timeUntilReturn: 1
+  projectileSpeed: 30
+  timeUntilReturn: 2
   objectPool: {fileID: 11400000, guid: 077e9085d8320f742ab735519ed703e0, type: 2}
 --- !u!114 &2495401284405571847
 MonoBehaviour:
@@ -182,4 +182,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c56883329fda134180e31509a4ef439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onCollisionEnter: {fileID: 11400000, guid: 77591284702afd1418824813cbd64a3c, type: 2}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  colliders: []
+  onCollisionEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onCollisionEnterPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  onCollisionEnterBoomerang:
+    m_PersistentCalls:
+      m_Calls: []
+  onCollisionExit:
+    m_PersistentCalls:
+      m_Calls: []
+  onCollisionExitPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  onTriggerEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onTriggerExit:
+    m_PersistentCalls:
+      m_Calls: []
