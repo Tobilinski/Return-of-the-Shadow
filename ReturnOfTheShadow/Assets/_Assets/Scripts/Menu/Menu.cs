@@ -23,6 +23,6 @@ public class Menu : MonoBehaviour
 
     private void NextScene()
     {
-        SceneManager.LoadScene("Test");
+        SceneManager.LoadScene("Tutorial");
     }
 }
