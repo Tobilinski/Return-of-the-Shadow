@@ -38,11 +38,11 @@ public class MovingPlatformController : MonoBehaviour
         isStopped = !isStopped;
         if (isStopped)
         {
-            animator.enabled = true;
+            animator.enabled = false;
         }
         else
         {
-            animator.enabled = false;
+            animator.enabled = true;
         }
     }
 }
