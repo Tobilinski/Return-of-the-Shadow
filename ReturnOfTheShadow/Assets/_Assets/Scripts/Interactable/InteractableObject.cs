@@ -6,6 +6,7 @@ public class InteractableObject : MonoBehaviour,IInteractable
     private static readonly int _isTrigger = Animator.StringToHash("isTrigger");
     private Animator animator;
 
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -13,6 +14,6 @@ public class InteractableObject : MonoBehaviour,IInteractable
 
     public void Interact()
     {
-        if(animator != null) animator.SetTrigger(_isTrigger);
+        animator.SetTrigger(_isTrigger);
     }
 }
