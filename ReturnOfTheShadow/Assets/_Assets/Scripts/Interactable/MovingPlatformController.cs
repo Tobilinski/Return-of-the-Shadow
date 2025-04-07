@@ -6,11 +6,14 @@ using UnityEngine.Serialization;
 public class MovingPlatformController : MonoBehaviour
 {
     private Animator animator;
-    [FormerlySerializedAs("hasStop")] [SerializeField,ToggleLeft] private bool hasSecondAnimation;
+    [SerializeField,ToggleLeft] private bool hasSecondAnimation;
+    [SerializeField,ToggleLeft] private bool hasStopAnimation;
 
     [SerializeField] private string animationName; 
     [ShowIf("hasSecondAnimation"), SerializeField] private string animation2;
     private bool isTriggered;
+
+    private bool isStopped;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,5 +32,17 @@ public class MovingPlatformController : MonoBehaviour
             animator.Play(animation2);
         }
     }
-    
+    //Called in editor
+    public void PlayStopAnimation()
+    {
+        isStopped = !isStopped;
+        if (isStopped)
+        {
+            animator.enabled = true;
+        }
+        else
+        {
+            animator.enabled = false;
+        }
+    }
 }
