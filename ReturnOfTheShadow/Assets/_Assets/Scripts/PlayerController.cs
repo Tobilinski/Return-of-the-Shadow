@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.5f);
     [SerializeField] private LayerMask groundLayer;
     private int maxJumps = 2;
-    [SerializeField, GUIColor("Yellow"),ReadOnly]private int jumpRemaining;
+    [SerializeField] private VariableReference<int> jumpRemaining;
     [Title("Object Pool")]
     [SerializeField] private ObjectPool objectPool;
     private GameObject poolObject;
@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField, GUIColor("Green")] private float maxDistance;
     [Title("DropShadow")]
     [SerializeField] private Transform dropShadow;
+    private LineRenderer lineRenderer;
     
     //Collider Event Trigger
     private ColliderEventTrigger eventTrigger;
@@ -70,6 +71,8 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         eventTrigger = GetComponent<ColliderEventTrigger>();
         eventTrigger.onCollisionEnterBoomerang.AddListener(ReturnBoomerangOnCollision);
+        lineRenderer = GetComponent<LineRenderer>();
+        
     }
 
     private void OnDisable()
@@ -81,6 +84,8 @@ public class PlayerController : MonoBehaviour
     {
         UpdateDropShadow();
         crosshairLocation.value = crosshair.position;
+        lineRenderer.SetPosition(0,boomerangSpawn.position);
+        lineRenderer.SetPosition(1,crosshair.position);
         if (playerInput.currentControlScheme == "Gamepad")
         {
             UpdateMoveCrosshair();
@@ -147,7 +152,7 @@ public class PlayerController : MonoBehaviour
         else if (context.canceled) 
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
-            jumpRemaining--;
+            jumpRemaining.value--;
         }
     }
     public void OnMove(InputAction.CallbackContext context)
@@ -159,7 +164,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0, groundLayer))
         {
-            jumpRemaining = maxJumps;
+            jumpRemaining.value = maxJumps;
             movementSpeedFinal = movementSpeed;
             jumpPower = defaultJumpPower;
             timeOffFloor = 0f;
