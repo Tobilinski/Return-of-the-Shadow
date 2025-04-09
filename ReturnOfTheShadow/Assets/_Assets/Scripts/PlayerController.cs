@@ -10,10 +10,9 @@ public class PlayerController : MonoBehaviour
     private float horizontal;
     private Rigidbody2D rb;
     private PlayerInput playerInput;
-    [FormerlySerializedAs("movementSpeed")]
     [Title("Move")]
     [SerializeField, GUIColor("Yellow"), ReadOnly] private float movementSpeedFinal;
-    [SerializeField] private float movementSpeed;
+    [SerializeField] private VariableReference<float> movementSpeed;
     [SerializeField] private float midAirSpeed;
     [SerializeField] private float defaultJumpPower;
     [SerializeField] private float midAirJumpPower;

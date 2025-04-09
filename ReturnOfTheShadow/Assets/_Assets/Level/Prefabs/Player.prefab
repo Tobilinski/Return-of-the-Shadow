@@ -437,7 +437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeedFinal: 12
-  movementSpeed: 12
+  movementSpeed: {fileID: 11400000, guid: 6ad008e0405873c4b88be93d49cd5229, type: 2}
   midAirSpeed: 10
   defaultJumpPower: 16
   midAirJumpPower: 12
@@ -533,10 +533,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c56883329fda134180e31509a4ef439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  colliders: []
   onCollisionEnter:
     m_PersistentCalls:
       m_Calls: []
+  onCollisionEnterPlayer:
+    m_PersistentCalls:
+      m_Calls: []
   onCollisionEnterBoomerang:
+    m_PersistentCalls:
+      m_Calls: []
+  onCollisionExit:
+    m_PersistentCalls:
+      m_Calls: []
+  onCollisionExitPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  onTriggerEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onTriggerExit:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &2219112056957430226
