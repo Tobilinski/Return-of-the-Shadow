@@ -4,7 +4,7 @@ public class TutorialTextFade : MonoBehaviour
 {
     private Animator animator;
 
-    void Start()
+    void OnEnable()
     {
         animator = GetComponent<Animator>();
 
@@ -13,16 +13,8 @@ public class TutorialTextFade : MonoBehaviour
             Debug.LogError("No Animator component found on this GameObject.");
         }
     }
-
-    void Update()
+    public void Play()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            animator.Play("Fade");
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            animator.Play("Fade");
-        }
+        animator.Play("Fade");
     }
 }

@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         UpdateDropShadow();
+        UpdateGroundCheck();
         crosshairLocation.value = crosshair.position;
         lineRenderer.SetPosition(0,boomerangSpawn.position);
         lineRenderer.SetPosition(1,crosshair.position);
@@ -99,7 +100,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        UpdateGroundCheck();
+        
         rb.linearVelocity = new Vector2(horizontal * movementSpeedFinal, rb.linearVelocity.y);
         FixedUpdateGravity();
     }
@@ -168,12 +169,14 @@ public class PlayerController : MonoBehaviour
             movementSpeedFinal = movementSpeed;
             jumpPower = defaultJumpPower;
             timeOffFloor = 0f;
+            dropShadow.gameObject.SetActive(false);
         }
         else
         {
             movementSpeedFinal = midAirSpeed;
             jumpPower = midAirJumpPower;
             timeOffFloor += Time.deltaTime;
+            dropShadow.gameObject.SetActive(true);
         }
     }
 
