@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50c76515f513d8c4dbbafbc55992325a, type: 3}
+  m_Name: Messages
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: messages
+      Entry: 7
+      Data: 0|System.Collections.Generic.HashSet`1[[System.String, mscorlib]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 21
+    - Name: 
+      Entry: 1
+      Data: 'Remember: The best loot is patience.'
+    - Name: 
+      Entry: 1
+      Data: "Life is like a respawn timer \u2013 you\u2019ll get another chance."
+    - Name: 
+      Entry: 1
+      Data: Teamwork beats solo carries every time.
+    - Name: 
+      Entry: 1
+      Data: "Save your progress \u2013 in games and in life."
+    - Name: 
+      Entry: 1
+      Data: "Don\u2019t fear failure; it\u2019s just part of leveling up."
+    - Name: 
+      Entry: 1
+      Data: Grind today, glory tomorrow.
+    - Name: 
+      Entry: 1
+      Data: Sometimes, the side quests lead to the best rewards.
+    - Name: 
+      Entry: 1
+      Data: Even the strongest boss has a weak spot.
+    - Name: 
+      Entry: 1
+      Data: Lag happens. Keep playing.
+    - Name: 
+      Entry: 1
+      Data: You can't win every match, but you can always improve.
+    - Name: 
+      Entry: 1
+      Data: A good player adapts; a great player evolves.
+    - Name: 
+      Entry: 1
+      Data: XP is earned, not given.
+    - Name: 
+      Entry: 1
+      Data: Failure is just feedback in disguise.
+    - Name: 
+      Entry: 1
+      Data: Every champion was once a noob.
+    - Name: 
+      Entry: 1
+      Data: "Don\u2019t rage quit \u2013 restart smarter."
+    - Name: 
+      Entry: 1
+      Data: "Check your gear \u2013 preparation wins battles."
+    - Name: 
+      Entry: 1
+      Data: When in doubt, explore.
+    - Name: 
+      Entry: 1
+      Data: A rested mind is a sharper sword.
+    - Name: 
+      Entry: 1
+      Data: The real high score is balance in life.
+    - Name: 
+      Entry: 1
+      Data: Courage is the ultimate power-up.
+    - Name: 
+      Entry: 1
+      Data: You can't win every match, but you can always improv123.
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 

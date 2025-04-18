@@ -1,0 +1,25 @@
+{
+  "messages": [
+    "Remember: The best loot is patience.",
+    "Life is like a respawn timer – you’ll get another chance.",
+    "Teamwork beats solo carries every time.",
+    "Save your progress – in games and in life.",
+    "Don’t fear failure; it’s just part of leveling up.",
+    "Grind today, glory tomorrow.",
+    "Sometimes, the side quests lead to the best rewards.",
+    "Even the strongest boss has a weak spot.",
+    "Lag happens. Keep playing.",
+    "You can't win every match, but you can always improve.",
+    "You can't win every match, but you can always improv123.",
+    "A good player adapts; a great player evolves.",
+    "XP is earned, not given.",
+    "Failure is just feedback in disguise.",
+    "Every champion was once a noob.",
+    "Don’t rage quit – restart smarter.",
+    "Check your gear – preparation wins battles.",
+    "When in doubt, explore.",
+    "A rested mind is a sharper sword.",
+    "The real high score is balance in life.",
+    "Courage is the ultimate power-up."
+  ]
+}
