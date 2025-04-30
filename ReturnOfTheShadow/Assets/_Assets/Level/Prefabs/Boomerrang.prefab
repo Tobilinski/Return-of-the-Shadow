@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crosshairLocation: {fileID: 11400000, guid: 76d14409fb60ad046a53daba129f8534, type: 2}
-  projectileSpeed: 30
+  projectileSpeed: 60
   timeUntilReturn: 2
   objectPool: {fileID: 11400000, guid: 077e9085d8320f742ab735519ed703e0, type: 2}
 --- !u!114 &2495401284405571847
