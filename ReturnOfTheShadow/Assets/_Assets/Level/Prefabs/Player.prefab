@@ -409,7 +409,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 469705973460161879}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnReturn
+        m_MethodName: OnTeleport
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -459,6 +459,8 @@ MonoBehaviour:
   crosshairLocation: {fileID: 11400000, guid: 76d14409fb60ad046a53daba129f8534, type: 2}
   maxDistance: 10
   dropShadow: {fileID: 5991151201627196208}
+  ability: {fileID: 11400000, guid: 4a6e8ed2c23afc842819722f5af21e13, type: 2}
+  boomerangLocation: {fileID: 11400000, guid: 0486e7475f0fb364488a3104d2cec462, type: 2}
 --- !u!50 &7347759422061767120
 Rigidbody2D:
   serializedVersion: 5

@@ -5,6 +5,7 @@ public class Boomerang : MonoBehaviour,IReturn
 {
     private Rigidbody2D rb;
     [SerializeField] private VariableReference<Vector2> crosshairLocation;
+    [SerializeField] private VariableReference<Vector2> boomerangPosition;
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float timeUntilReturn;
     private bool startTimer = false;
@@ -79,6 +80,7 @@ public class Boomerang : MonoBehaviour,IReturn
         {
             CheckReturnTime();
         }
+        boomerangPosition.value = transform.position;
     }
 
     private void CheckReturnTime()

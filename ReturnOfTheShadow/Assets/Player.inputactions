@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Return",
+                    "name": "Teleport",
                     "type": "Button",
                     "id": "5107632b-84e0-4665-bca9-f1aace02021d",
                     "expectedControlType": "",
@@ -301,7 +301,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Return",
+                    "action": "Teleport",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -312,7 +312,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Return",
+                    "action": "Teleport",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

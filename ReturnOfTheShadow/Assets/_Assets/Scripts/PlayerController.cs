@@ -45,6 +45,10 @@ public class PlayerController : MonoBehaviour
     [Title("DropShadow")]
     [SerializeField] private Transform dropShadow;
     private LineRenderer lineRenderer;
+    [Title("Abilities")]
+    [SerializeField] private AbilityHolder ability;
+    private float delayAbility;
+    [SerializeField] private VariableReference<Vector2> boomerangLocation;
     
     //Collider Event Trigger
     private ColliderEventTrigger eventTrigger;
@@ -72,7 +76,6 @@ public class PlayerController : MonoBehaviour
         eventTrigger = GetComponent<ColliderEventTrigger>();
         eventTrigger.onCollisionEnterBoomerang.AddListener(ReturnBoomerangOnCollision);
         lineRenderer = GetComponent<LineRenderer>();
-        
     }
 
     private void OnDisable()
@@ -197,6 +200,14 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    public void OnTeleport(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            StartCoroutine(Teleport());
+        }
+    }
     public void OnLookController(InputAction.CallbackContext context)
     {
         lookHorizontal = context.ReadValue<Vector2>().x;
@@ -213,5 +224,24 @@ public class PlayerController : MonoBehaviour
     {
         IReturn returnObject = other.gameObject.GetComponent<IReturn>();
         returnObject.DespawnBoomerang();
+    }
+    private IEnumerator Teleport()
+    {
+        foreach (Ability i in ability.abilities)
+        {
+            if (i is TeleportAbility teleportAb)
+            {
+               delayAbility = teleportAb.delay;
+            }
+        }
+        yield return new WaitForSeconds(delayAbility); // delay time before activating
+
+        foreach (Ability i in ability.abilities)
+        {
+            if (i.abilityName == "Teleport")
+            {
+                i.Activate(this, boomerangLocation);
+            }
+        }
     }
 }
