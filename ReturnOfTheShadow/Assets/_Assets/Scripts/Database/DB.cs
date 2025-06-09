@@ -3,124 +3,136 @@ using System.Net.Http;
 using System.Text;
 using UnityEngine;
 using System.Threading.Tasks;
+using Lean.Gui;
 using Sirenix.OdinInspector;
+using TMPro;
+using UnityEngine.UI;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 public class DB : MonoBehaviour
 {
-    string supabaseURL = "https://edmkfjdowivfcoacemfs.supabase.co";
+    [SerializeField] private VariableReference<int> coins;
 
-    [SerializeField, ReadOnly] private string tokenKey;
-    [SerializeField, ReadOnly] private string userID;
-    [SerializeField] private int coins;
-
-    [SerializeField] private GameEvent onlogin;
+    [SerializeField] private GameEvent onLogin;
+    [SerializeField] private GameEvent onSignUp;
+    [SerializeField] private GameEvent onSignUpFailed;
+    [SerializeField] private GameEvent onLoginFailed;
+    [SerializeField] private GameEvent onCoinGet;
+    
+    [SerializeField] private TMP_InputField loginEmailInputField;
+    [SerializeField] private TMP_InputField loginPasswordInputField;
+    [SerializeField] private TMP_InputField signUpEmailInputField;
+    [SerializeField] private TMP_InputField signUpPasswordInputField;
+    [SerializeField] private Button loginButton;
+    [SerializeField] private Button signUpButton;
+    
+    [SerializeField] private GameObject loginWindow;
+    [SerializeField] private GameObject signupWindow;  
 
     [SerializeField] private VariableReference<string> apiKey;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    async void Start()
+    [Title("SupabaseManager")]
+    [SerializeField] private SupabaseManager supabaseManager;
+    
+
+    private void Start()
     {
-       await LoginUser("tobiasktm85sx@gmail.com", "Ktm1190r");
+        loginButton.onClick.AddListener(Login);
+        signUpButton.onClick.AddListener(CreateUser);
+    }
+
+    private void OnDisable()
+    {
+        loginButton.onClick.RemoveListener(Login);
+        signUpButton.onClick.RemoveListener(CreateUser);
+    }
+
+    public async void Login()
+    {
+        await SignIn(loginEmailInputField.text, loginPasswordInputField.text);
+    }
+    public async void CreateUser()
+    {
+        await SignUp(signUpEmailInputField.text, signUpPasswordInputField.text);
+    }
+    public async Task SignIn(string email, string password)
+    {
+        var client = supabaseManager.GetClient();
+        try
+        {
+            var signedInPerson = await client.Auth.SignIn(email, password);
+            Debug.Log("Signed in: " + signedInPerson.User.Id);
+            onLogin?.Raise(true);
+            try
+            {
+                await GetCoins();
+                
+            }
+            catch (Exception e)
+            {
+                await SetCoins(coins.value + 1);
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        catch (Exception e)
+        {
+            onLoginFailed?.Raise(false);
+            Debug.Log(e.Message);
+            throw;
+        }
+    }
+    public async Task SignUp(string email, string password)
+    {
+        var client = supabaseManager.GetClient();
+        
+            var session = await client.Auth.SignUp(email, password);
+            if (session.User.Email != email)
+            {
+                Debug.Log($"Signed up: {session.User.Id} - {session.User.Email}");
+                onSignUp?.Raise(true);
+            }
+            else
+            {
+                onSignUpFailed?.Raise(false);
+                Debug.LogError("Sign up failed");
+            }
     }
     
-    public async Task LoginUser(string email, string password)
+    public async Task GetCoins()
     {
-        string LoginURL = supabaseURL + "/auth/v1/token?grant_type=password";
-        var request = new HttpRequestMessage(HttpMethod.Post, LoginURL);
+        var client = supabaseManager.GetClient();
+        var userId = client.Auth.CurrentUser.Id;
         
-        request.Headers.Add("apikey",apiKey);
-        var json = $"{{\"email\":\"{email}\",\"password\":\"{password}\"}}";
-        request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+        var result = await client.From<UserData>().Where(u => u.User_DataID == userId).Get();
         
-        var response = await new HttpClient().SendAsync(request);
-        var body = await response.Content.ReadAsStringAsync();
-
-        if (response.IsSuccessStatusCode)
+        if (result.Content is null)
         {
-            Debug.Log("Login successful");
-            onlogin?.Raise(true);
-            tokenKey = ExtractAccessToken(body);
-            userID = ExtractUserID(body);
-            await UpdateUserScore(tokenKey, userID,coins);
-            await GetData(tokenKey, userID);
+            Debug.LogError("Failed to get coins");
         }
-        else
+        var userData = result.Models[0];
+        coins.value = userData.Coins;
+        //raise event
+        onCoinGet?.Raise(coins.value);
+    }
+    public async Task SetCoins(int newValue)
+    {
+        var client = supabaseManager.GetClient();
+        try
         {
-            Debug.Log("Login Unsuccessful");
+            var userId = client.Auth.CurrentUser.Id;
+
+            UserData newData = new UserData
+            {
+                User_DataID = userId,
+                Coins = newValue
+            };
+
+            await client.From<UserData>().Upsert(newData);
         }
-    }
-    public async Task UpdateUserScore(string accessToken, string user, int newScore)
-    {
-        string url = $"{supabaseURL}/rest/v1/user_Data?user_DataID=eq.{user}";
-        var request = new HttpRequestMessage(HttpMethod.Patch, url);
-
-        request.Headers.Add("apikey", apiKey);
-        request.Headers.Add("Authorization", $"Bearer {accessToken}");
-
-        // JSON body with the column(s) to update
-        var json = $"{{\"Coins\": {newScore}}}";
-        request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        var response = await new HttpClient().SendAsync(request);
-        string body = await response.Content.ReadAsStringAsync();
-
-        if (response.IsSuccessStatusCode)
+        catch (Exception e)
         {
-            Debug.Log("User updated successfully: " + body);
+            Console.WriteLine(e);
+            throw;
         }
-        else
-        {
-            Debug.LogError($"Error updating user: {response.StatusCode} - {body}");
-        }
-    }
-
-    public async Task GetData(string accessToken, string user)
-    {
-        string url = $"{supabaseURL}/rest/v1/user_Data?user_DataID=eq.{user}";
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
-
-        request.Headers.Add("apikey", apiKey);
-        request.Headers.Add("Authorization", $"Bearer {accessToken}");
-
-        var response = await new HttpClient().SendAsync(request);
-        string body = await response.Content.ReadAsStringAsync();
-
-        if (response.IsSuccessStatusCode)
-        {
-            Debug.Log("User updated successfully: " + body); 
-            coins = ExtractCoins(body);
-        }
-        else
-        {
-            Debug.LogError($"Error updating user: {response.StatusCode} - {body}");
-        }
-    }
-    [Serializable]
-    public class LoginResponse
-    {
-        public string access_token;
-    }
-
-    [Serializable]
-    public class UserDetails
-    {
-        public string id;
-        public int Coins;
-        // Add other fields you need here
-    }
-
-    
-    private string ExtractAccessToken(string body)
-    {
-        LoginResponse token = JsonUtility.FromJson<LoginResponse>(body);
-        return token.access_token;
-    }
-    private string ExtractUserID(string body)
-    {
-        UserDetails details = JsonUtility.FromJson<UserDetails>(body);
-        return details.id;
-    }
-    private int ExtractCoins(string body)
-    {
-        UserDetails details = JsonUtility.FromJson<UserDetails>(body);
-        return details.Coins;
     }
 }

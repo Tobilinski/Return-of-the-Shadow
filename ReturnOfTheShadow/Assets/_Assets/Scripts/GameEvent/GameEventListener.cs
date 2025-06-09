@@ -6,6 +6,7 @@ public class GameEventListener : MonoBehaviour
 {
     [SerializeField] private GameEvent gameEvent;
     [SerializeField] private CustomUnityEvent response;
+    [SerializeField] private UnityEvent<string> responseString;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnEnable()
     {
@@ -19,6 +20,11 @@ public class GameEventListener : MonoBehaviour
 
     public void OnEventRaised(object data)
     {
+        if (data is int)
+        {
+            responseString.Invoke(data.ToString());
+            Debug.Log($"string show {data}");
+        }
         response.Invoke(data);
     }
 }
